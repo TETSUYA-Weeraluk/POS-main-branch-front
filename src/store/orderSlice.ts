@@ -1,18 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ItemCardMenuComponentProps } from "../pages/order/components/ItemCardMenu.component";
+import { Cart, ListOrders } from "../pages/order/order-type";
 
 export interface OrderState {
-  cart: {
-    total: number;
-    items: {
-      type: string;
-      order: {
-        name: string;
-        price: number;
-        quantity: number;
-      }[];
-    }[];
-  };
+  cart: Cart;
+  listOrders: ListOrders[];
   loading?: "idle" | "pending" | "succeeded" | "failed";
   error?: string;
 }
@@ -20,8 +12,10 @@ export interface OrderState {
 const initialState: OrderState = {
   cart: {
     total: 0,
+    quantity: 0,
     items: [],
   },
+  listOrders: [],
   loading: "idle",
   error: "",
 };
@@ -40,6 +34,8 @@ const orderSlice = createSlice({
       if (indexType === -1) {
         state.cart.items.push({
           type,
+          quantity: 1,
+          total: price,
           order: [
             {
               name,
@@ -62,8 +58,12 @@ const orderSlice = createSlice({
         } else {
           state.cart.items[indexType].order[indexItem].quantity += 1;
         }
+
+        state.cart.items[indexType].total += price;
+        state.cart.items[indexType].quantity += 1;
       }
 
+      state.cart.quantity += 1;
       state.cart.total += price;
     },
 
@@ -91,6 +91,8 @@ const orderSlice = createSlice({
         return;
       }
 
+      state.cart.items[indexType].total -= price;
+
       if (state.cart.items[indexType].order[indexItem].quantity === 1) {
         state.cart.items[indexType].order.splice(indexItem, 1);
 
@@ -103,9 +105,33 @@ const orderSlice = createSlice({
 
       state.cart.items[indexType].order[indexItem].quantity -= 1;
     },
+
+    confirmOrder(
+      state,
+      action: PayloadAction<{
+        cart: Cart;
+        codeDiscount: string;
+        discount: number;
+        descriptionDiscount: string;
+        total: number;
+      }>
+    ) {
+      const { cart, codeDiscount, discount, descriptionDiscount, total } =
+        action.payload;
+
+      const data: ListOrders = {
+        orders: cart.items,
+        total: total,
+        quantity: cart.quantity,
+        code: codeDiscount,
+        status: "pending",
+        discount,
+        descriptionDiscount,
+      };
+      state.listOrders.push(data);
+    },
   },
-  //   extraReducers: (builder) => {},
 });
 
-export const { addInCart, removeItem } = orderSlice.actions;
+export const { addInCart, removeItem, confirmOrder } = orderSlice.actions;
 export default orderSlice.reducer;

@@ -3,6 +3,8 @@ import { useState } from "react";
 import ListOrderComponent from "./components/ListOrder.component";
 import { listItems } from "./dataItems";
 import { OrderType } from "./order-type";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 export interface Item {
   name: string;
@@ -14,10 +16,12 @@ export interface Item {
 const Order = () => {
   const listTypes = Object.values(OrderType);
 
-  console.log(listTypes);
-
   const [items, setItems] = useState<Item[]>(listItems);
   const [selectedType, setSelectedType] = useState<string>("ALL");
+
+  const test = useSelector((state: RootState) => state.order.listOrders);
+
+  console.log("test", test);
 
   const selectType = (type: string) => {
     if (type === "ALL") {

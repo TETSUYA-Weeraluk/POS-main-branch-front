@@ -1,6 +1,6 @@
 import { Divider, TextField } from "@mui/material";
 import { RootState, useAppDispatch } from "../../../store";
-import { addInCart, removeItem } from "../../../store/orderSlice";
+import { addInCart, confirmOrder, removeItem } from "../../../store/orderSlice";
 import { useSelector } from "react-redux";
 import { ChangeEvent, useState } from "react";
 
@@ -58,6 +58,18 @@ const ListOrderComponent = () => {
     setCode("");
     setDiscount(0);
     setDescriptionDiscount("");
+  };
+
+  const confirm = () => {
+    dispatch(
+      confirmOrder({
+        cart: orders,
+        codeDiscount: code,
+        discount: discount,
+        descriptionDiscount: descriptionDiscount,
+        total: discount ? finalTotal : orders.total,
+      })
+    );
   };
 
   return (
@@ -136,20 +148,28 @@ const ListOrderComponent = () => {
       <Divider />
 
       {/* Total */}
-      <div>
-        <div className="flex justify-between text-neutral-400">
-          <span>price</span>
-          <span>{orders.total}฿</span>
+      <div className="space-y-4">
+        <div>
+          <div className="flex justify-between text-neutral-400">
+            <span>price</span>
+            <span>{orders.total}฿</span>
+          </div>
+
+          <div className="flex justify-between text-neutral-400">
+            <span>discount {descriptionDiscount}</span>
+            <span>{discount ? `-${discount}` : discount}฿</span>
+          </div>
+
+          <div className="flex justify-between font-bold">
+            <span className="text-xl font-bold">Total</span>
+            <span>{discount ? finalTotal : orders.total}฿</span>
+          </div>
         </div>
 
-        <div className="flex justify-between text-neutral-400">
-          <span>discount {descriptionDiscount}</span>
-          <span>{discount ? `-${discount}` : discount}฿</span>
-        </div>
-
-        <div className="flex justify-between font-bold">
-          <span className="text-xl font-bold">Total</span>
-          <span>{discount ? finalTotal : orders.total}฿</span>
+        <div>
+          <button onClick={confirm} className="button-base">
+            Confirm
+          </button>
         </div>
       </div>
     </div>
