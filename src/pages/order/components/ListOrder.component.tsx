@@ -1,3 +1,6 @@
+import { useAppDispatch } from "../../../store";
+import { addInCart, removeItem } from "../../../store/orderSlice";
+
 export interface ListOrderProps {
   type: string;
   order: {
@@ -9,6 +12,16 @@ export interface ListOrderProps {
 
 const ListOrderComponent = (props: { orders: ListOrderProps[] }) => {
   const { orders } = props;
+  const dispatch = useAppDispatch();
+
+  const addItem = (type: string, name: string, price: number) => {
+    dispatch(addInCart({ name, price, type }));
+  };
+
+  const removeItemInCart = (type: string, name: string) => {
+    dispatch(removeItem({ name, type }));
+  };
+
   return orders.map((order) => (
     <div className="space-y-2" key={order.type}>
       <span className="font-bold text-lg">{order.type}</span>
@@ -22,9 +35,19 @@ const ListOrderComponent = (props: { orders: ListOrderProps[] }) => {
           </div>
 
           <div className="flex items-center gap-2 w-full">
-            <button className="button-base">-</button>
+            <button
+              className="button-base"
+              onClick={() => removeItemInCart(order.type, item.name)}
+            >
+              -
+            </button>
             <span>{item.quantity}</span>
-            <button className="button-base">+</button>
+            <button
+              className="button-base"
+              onClick={() => addItem(order.type, item.name, item.price)}
+            >
+              +
+            </button>
           </div>
 
           <div className="flex flex-col items-end">

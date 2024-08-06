@@ -50,9 +50,39 @@ const orderSlice = createSlice({
         }
       }
     },
+
+    removeItem(state, action: PayloadAction<{ name: string; type: string }>) {
+      const { name, type } = action.payload;
+
+      const indexType = state.cart.findIndex((order) => order.type === type);
+
+      if (indexType === -1) {
+        return;
+      }
+
+      const indexItem = state.cart[indexType].order.findIndex(
+        (order) => order.name === name
+      );
+
+      if (indexItem === -1) {
+        return;
+      }
+
+      if (state.cart[indexType].order[indexItem].quantity === 1) {
+        state.cart[indexType].order.splice(indexItem, 1);
+
+        if (state.cart[indexType].order.length === 0) {
+          state.cart.splice(indexType, 1);
+        }
+
+        return;
+      }
+
+      state.cart[indexType].order[indexItem].quantity -= 1;
+    },
   },
   //   extraReducers: (builder) => {},
 });
 
-export const { addInCart } = orderSlice.actions;
+export const { addInCart, removeItem } = orderSlice.actions;
 export default orderSlice.reducer;
