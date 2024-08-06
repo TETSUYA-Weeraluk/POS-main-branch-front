@@ -1,16 +1,21 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import HeaderDefault from "../components/Header/HeaderDefault";
+import Navbar from "../components/Navbar/Navbar";
 
 const DefaultLayout: React.FC = () => (
-  <div className="flex flex-col min-h-screen">
-    <header>
-      <HeaderDefault />
-    </header>
-    <main className="w-full flex-grow max-w-7xl mx-auto">
-      <Outlet />
-    </main>
-    <footer>Default Footer</footer>
+  <div className="flex min-h-screen w-full">
+    <div>
+      <Navbar />
+    </div>
+    <div className="w-full">
+      <header>
+        <HeaderDefault />
+      </header>
+      <main className="w-full flex-grow p-4">
+        <Outlet />
+      </main>
+    </div>
   </div>
 );
 

@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import homeReducer from "./homeSlice";
 import { useDispatch } from "react-redux";
+import orderReducer from "./orderSlice";
 
 export const store = configureStore({
   reducer: {
     home: homeReducer,
+    order: orderReducer,
   },
 });
 
