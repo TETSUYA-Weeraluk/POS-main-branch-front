@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-primary: #279eff;
+  --color-text-color: #000000;
+  --color-text-color-secondary: #ffffff;
+}
+
+@layer components {
+  .button-base {
+    @apply bg-primary text-colorTextSecondary px-4 py-2 rounded-md w-full;
+  }
+}
