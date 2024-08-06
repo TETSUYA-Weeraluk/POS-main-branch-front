@@ -1,9 +1,6 @@
-import { Divider } from "@mui/material";
 import ItemCardMenuComponent from "./components/ItemCardMenu.component";
 import { useState } from "react";
 import ListOrderComponent from "./components/ListOrder.component";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
 
 interface Item {
   name: string;
@@ -45,8 +42,6 @@ const Order = () => {
   const [items, setItems] = useState<Item[]>(listItems);
   const [selectedType, setSelectedType] = useState<string>("ALL");
 
-  const itemInCart = useSelector((state: RootState) => state.order.cart);
-
   const selectType = (type: string) => {
     if (type === "ALL") {
       setItems(listItems);
@@ -60,6 +55,7 @@ const Order = () => {
 
   return (
     <div className="space-y-4">
+      {/* Select Type */}
       <div className="flex flex-wrap gap-4">
         <button
           className={`rounded px-4 py-2 ${
@@ -86,9 +82,10 @@ const Order = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-4 w-full">
-        <div className="space-y-4 col-span-2">
-          <div className="grid grid-cols-3 w-full flex-grow gap-4">
+      {/* All Item */}
+      <div className="flex gap-4 w-full">
+        <div className="space-y-4 col-span-2 w-full">
+          <div className="grid grid-cols-4 w-full flex-grow gap-4">
             {items.map((item, index) => (
               <ItemCardMenuComponent
                 key={index}
@@ -101,11 +98,8 @@ const Order = () => {
           </div>
         </div>
 
-        <div className="space-y-4 border rounded h-full p-4">
-          <p className="text-center text-colorText font-bold">Order</p>
-          <Divider />
-          <ListOrderComponent orders={itemInCart} />
-        </div>
+        {/* Cart */}
+        <ListOrderComponent />
       </div>
     </div>
   );
