@@ -1,8 +1,10 @@
 import ItemCardMenuComponent from "./components/ItemCardMenu.component";
 import { useState } from "react";
 import ListOrderComponent from "./components/ListOrder.component";
+import { listItems } from "./dataItems";
+import { OrderType } from "./order-type";
 
-interface Item {
+export interface Item {
   name: string;
   price: number;
   image: string;
@@ -10,34 +12,9 @@ interface Item {
 }
 
 const Order = () => {
-  const listItems: Item[] = [
-    {
-      name: "Red Potion",
-      price: 10,
-      image: "red-potion.png",
-      type: "Drink",
-    },
-    {
-      name: "Orange Potion",
-      price: 20,
-      image: "orange-potion.png",
-      type: "Drink",
-    },
-    {
-      name: "Orange Potion",
-      price: 30,
-      image: "orange-potion.png",
-      type: "Food",
-    },
-    {
-      name: "Orange Potion",
-      price: 40,
-      image: "orange-potion.png",
-      type: "Dessert",
-    },
-  ];
+  const listTypes = Object.values(OrderType);
 
-  const listTypes = ["Drink", "Food", "Dessert", "Snack"];
+  console.log(listTypes);
 
   const [items, setItems] = useState<Item[]>(listItems);
   const [selectedType, setSelectedType] = useState<string>("ALL");
@@ -57,16 +34,6 @@ const Order = () => {
     <div className="space-y-4">
       {/* Select Type */}
       <div className="flex flex-wrap gap-4">
-        <button
-          className={`rounded px-4 py-2 ${
-            selectedType === "ALL"
-              ? "bg-primary text-colorTextSecondary"
-              : "bg-colorTextSecondary text-primary"
-          }`}
-          onClick={() => selectType("ALL")}
-        >
-          All
-        </button>
         {listTypes.map((type, index) => (
           <button
             key={index}
@@ -85,7 +52,12 @@ const Order = () => {
       {/* All Item */}
       <div className="flex gap-4 w-full">
         <div className="space-y-4 col-span-2 w-full">
-          <div className="grid grid-cols-4 w-full flex-grow gap-4">
+          <div
+            className="grid grid-cols-4 w-full flex-grow gap-4 overflow-auto"
+            style={{
+              maxHeight: "calc(100vh - 180px)",
+            }}
+          >
             {items.map((item, index) => (
               <ItemCardMenuComponent
                 key={index}

@@ -11,6 +11,7 @@ const ListOrderComponent = () => {
 
   const [code, setCode] = useState<string>("");
   const [discount, setDiscount] = useState<number>(0);
+  const [descriptionDiscount, setDescriptionDiscount] = useState<string>("");
   const [finalTotal, setFinalTotal] = useState<number>(0);
   const [errorCode, setErrorCode] = useState<boolean>(false);
 
@@ -28,16 +29,16 @@ const ListOrderComponent = () => {
 
   const checkCode = (code: string) => {
     if (code === "Hello") {
-      console.log("Code is correct");
       const total = orders.total;
       setDiscount(10);
       setFinalTotal(total - 10);
+      setDescriptionDiscount("10฿");
     } else if (code === "World") {
-      console.log("Code is correct");
       const total = orders.total;
       const disc = total * 0.1;
       setDiscount(disc);
       setFinalTotal(total - disc);
+      setDescriptionDiscount("10%");
     } else {
       setErrorCode(true);
     }
@@ -51,6 +52,12 @@ const ListOrderComponent = () => {
     }
 
     setCode(e.target.value);
+  };
+
+  const removeCode = () => {
+    setCode("");
+    setDiscount(0);
+    setDescriptionDiscount("");
   };
 
   return (
@@ -113,7 +120,7 @@ const ListOrderComponent = () => {
             disabled={discount > 0}
             InputProps={{
               endAdornment: discount > 0 && (
-                <button onClick={() => setDiscount(0)}>X</button>
+                <button onClick={() => removeCode()}>X</button>
               ),
             }}
           />
@@ -136,7 +143,7 @@ const ListOrderComponent = () => {
         </div>
 
         <div className="flex justify-between text-neutral-400">
-          <span>discount</span>
+          <span>discount {descriptionDiscount}</span>
           <span>{discount ? `-${discount}` : discount}฿</span>
         </div>
 

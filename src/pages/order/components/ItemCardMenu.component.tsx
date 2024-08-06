@@ -25,7 +25,7 @@ const ItemCardMenuComponent = (props: ItemCardMenuComponentProps) => {
             <img
               src={image}
               alt=""
-              className="h-[100px] w-[150px] hover:scale-125 transition-transform duration-500 object-contain"
+              className="h-[100px] w-[150px] hover:scale-150 transition-transform duration-500 object-contain"
             />
           </div>
           <Divider />
