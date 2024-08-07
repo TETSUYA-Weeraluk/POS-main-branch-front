@@ -3,6 +3,8 @@ import { RootState, useAppDispatch } from "../../../store";
 import { addInCart, confirmOrder, removeItem } from "../../../store/orderSlice";
 import { useSelector } from "react-redux";
 import { ChangeEvent, useState } from "react";
+import DialogConfirm from "../../../components/dialog/DialogConfirm";
+import DialogAlert from "../../../components/dialog/Dialog-Alert";
 
 const ListOrderComponent = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +16,8 @@ const ListOrderComponent = () => {
   const [descriptionDiscount, setDescriptionDiscount] = useState<string>("");
   const [finalTotal, setFinalTotal] = useState<number>(0);
   const [errorCode, setErrorCode] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
 
   const addItem = (type: string, name: string, price: number) => {
     dispatch(addInCart({ name, price, type }));
@@ -28,6 +32,7 @@ const ListOrderComponent = () => {
   }
 
   const checkCode = (code: string) => {
+    setErrorCode(false);
     if (code === "Hello") {
       const total = orders.total;
       setDiscount(10);
@@ -61,6 +66,27 @@ const ListOrderComponent = () => {
   };
 
   const confirm = () => {
+    handleClickOpen();
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpenDialogAlert = () => {
+    setOpenAlert(true);
+  };
+
+  const handleCloseDialogAlert = () => {
+    setOpenAlert(false);
+  };
+
+  const handleConfirm = () => {
+    handleClose();
     dispatch(
       confirmOrder({
         cart: orders,
@@ -70,6 +96,7 @@ const ListOrderComponent = () => {
         total: discount ? finalTotal : orders.total,
       })
     );
+    handleOpenDialogAlert();
   };
 
   return (
@@ -172,6 +199,15 @@ const ListOrderComponent = () => {
           </button>
         </div>
       </div>
+
+      <DialogConfirm
+        title="Confirm Order"
+        open={open}
+        onClose={handleClose}
+        onConfirm={handleConfirm}
+      />
+
+      <DialogAlert open={openAlert} onClose={handleCloseDialogAlert} />
     </div>
   );
 };
