@@ -1,23 +1,41 @@
-import { Divider, TextField } from "@mui/material";
+import {
+  Checkbox,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
 import { RootState, useAppDispatch } from "../../../store";
 import { addInCart, confirmOrder, removeItem } from "../../../store/orderSlice";
 import { useSelector } from "react-redux";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import DialogConfirm from "../../../components/dialog/DialogConfirm";
 import DialogAlert from "../../../components/dialog/Dialog-Alert";
+import DialogSelectCode from "./DialogSelectCode";
+import { CiCircleRemove } from "react-icons/ci";
+import { useTranslation } from "react-i18next";
 
 const ListOrderComponent = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const orders = useSelector((state: RootState) => state.order.cart);
 
-  const [code, setCode] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [takeAway, setTakeAway] = useState<boolean>(false);
+  const [selectedTable, setSelectedTable] = useState<string>("table1");
+  const [selectedCode, setSelectedCode] = useState<string>("");
+  const [openDialogCode, setOpenDialogCode] = useState<boolean>(false);
   const [discount, setDiscount] = useState<number>(0);
   const [descriptionDiscount, setDescriptionDiscount] = useState<string>("");
   const [finalTotal, setFinalTotal] = useState<number>(0);
-  const [errorCode, setErrorCode] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false);
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
 
   const addItem = (type: string, name: string, price: number) => {
     dispatch(addInCart({ name, price, type }));
@@ -30,40 +48,6 @@ const ListOrderComponent = () => {
   if (orders.items.length < 1) {
     return;
   }
-
-  const checkCode = (code: string) => {
-    setErrorCode(false);
-    if (code === "Hello") {
-      const total = orders.total;
-      setDiscount(10);
-      setFinalTotal(total - 10);
-      setDescriptionDiscount("10฿");
-    } else if (code === "World") {
-      const total = orders.total;
-      const disc = total * 0.1;
-      setDiscount(disc);
-      setFinalTotal(total - disc);
-      setDescriptionDiscount("10%");
-    } else {
-      setErrorCode(true);
-    }
-  };
-
-  const inputCode = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    if (e.target.value === "") {
-      setErrorCode(false);
-    }
-
-    setCode(e.target.value);
-  };
-
-  const removeCode = () => {
-    setCode("");
-    setDiscount(0);
-    setDescriptionDiscount("");
-  };
 
   const confirm = () => {
     handleClickOpen();
@@ -90,7 +74,7 @@ const ListOrderComponent = () => {
     dispatch(
       confirmOrder({
         cart: orders,
-        codeDiscount: code,
+        codeDiscount: selectedCode,
         discount: discount,
         descriptionDiscount: descriptionDiscount,
         total: orders.total,
@@ -99,9 +83,96 @@ const ListOrderComponent = () => {
     handleOpenDialogAlert();
   };
 
+  const handleCheckOrderToTable = () => {
+    setTakeAway((prev) => !prev);
+  };
+
+  const handleSelectTable = (e: SelectChangeEvent<string>) => {
+    setSelectedTable(e.target.value as string);
+  };
+
+  const handleSelectCode = (code: string) => {
+    const selectedCode = mockCode.find((item) => item.code === code);
+    if (selectedCode) {
+      setSelectedCode(selectedCode?.code);
+      setDescriptionDiscount(selectedCode?.description);
+      if (selectedCode.percent) {
+        setDiscount(() => (orders.total * selectedCode.discount) / 100);
+        setFinalTotal(
+          () => orders.total - (orders.total * selectedCode.discount) / 100
+        );
+      } else {
+        setDiscount(selectedCode.discount);
+        setFinalTotal(orders.total - selectedCode.discount);
+      }
+    }
+  };
+
+  const handleOpenDialogCode = () => {
+    setOpenDialogCode(true);
+  };
+
+  const handleCloseDialogCode = () => {
+    setOpenDialogCode(false);
+  };
+
+  const table = ["table1", "table2", "table3"];
+
+  const mockCode = [
+    { code: "1234", discount: 10, description: "10%", percent: true },
+    { code: "5678", discount: 20, description: "20%", percent: true },
+    { code: "1111", discount: 30, description: "30฿", percent: false },
+  ];
+
+  const handleResetCode = () => {
+    setSelectedCode("");
+    setDiscount(0);
+    setDescriptionDiscount("");
+    setFinalTotal(0);
+  };
+
   return (
-    <div className="space-y-4 border rounded h-full p-4">
-      <p className="text-center text-colorText font-bold">Order</p>
+    <div
+      className="space-y-4 border rounded h-full p-4 overflow-auto"
+      style={{
+        maxHeight: "calc(100vh - 180px)",
+      }}
+    >
+      <p className="text-center text-colorText font-bold">{t("order")}</p>
+
+      <FormControlLabel
+        control={
+          <Checkbox onChange={handleCheckOrderToTable} value={takeAway} />
+        }
+        label={t("takeAway")}
+      />
+
+      {!takeAway ? (
+        <FormControl sx={{ m: 1, width: 300 }}>
+          <InputLabel id="select-table">{t("table")}</InputLabel>
+          <Select
+            fullWidth
+            label={t("table")}
+            value={selectedTable}
+            onChange={(e) => handleSelectTable(e)}
+            input={<OutlinedInput label={t("table")} />}
+          >
+            {table.map((table) => (
+              <MenuItem key={table} value={table}>
+                {table}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      ) : (
+        <TextField
+          fullWidth
+          id="name-customer"
+          label="Name"
+          variant="outlined"
+        />
+      )}
+
       <Divider />
 
       {/* List */}
@@ -147,29 +218,28 @@ const ListOrderComponent = () => {
       ))}
 
       <div className="w-full space-y-2">
-        <div className="gap-2">
-          <TextField
-            type="text"
-            label="Code discount"
-            className="w-full"
-            onChange={(e) => inputCode(e)}
-            value={code}
-            error={errorCode}
-            helperText={errorCode ? "Code is invalid" : ""}
-            disabled={discount > 0}
-            InputProps={{
-              endAdornment: discount > 0 && (
-                <button onClick={() => removeCode()}>X</button>
-              ),
-            }}
+        {openDialogCode && (
+          <DialogSelectCode
+            open={openDialogCode}
+            onClose={handleCloseDialogCode}
+            onConfirm={handleSelectCode}
+            listCode={mockCode}
           />
+        )}
+
+        <div className="flex items-center justify-between">
+          <button
+            className="border w-full py-2 border-primary rounded"
+            onClick={handleOpenDialogCode}
+          >
+            {selectedCode ? `Code : ${selectedCode}` : t("selectCode")}
+          </button>
+          {selectedCode && (
+            <IconButton aria-label="delete" onClick={handleResetCode}>
+              <CiCircleRemove />
+            </IconButton>
+          )}
         </div>
-        <button
-          className="border w-full py-2 border-primary rounded"
-          onClick={() => checkCode(code)}
-        >
-          Check code
-        </button>
       </div>
 
       <Divider />
@@ -178,24 +248,26 @@ const ListOrderComponent = () => {
       <div className="space-y-4">
         <div>
           <div className="flex justify-between text-neutral-400">
-            <span>price</span>
+            <span>{t("total")}</span>
             <span>{orders.total}฿</span>
           </div>
 
           <div className="flex justify-between text-neutral-400">
-            <span>discount {descriptionDiscount}</span>
+            <span>
+              {t("discount")} {descriptionDiscount}
+            </span>
             <span>{discount ? `-${discount}` : discount}฿</span>
           </div>
 
           <div className="flex justify-between font-bold">
-            <span className="text-xl font-bold">Total</span>
+            <span className="text-xl font-bold">{t("totalPaid")}</span>
             <span>{discount ? finalTotal : orders.total}฿</span>
           </div>
         </div>
 
         <div>
           <button onClick={confirm} className="button-base">
-            Confirm
+            {t("confirm")}
           </button>
         </div>
       </div>

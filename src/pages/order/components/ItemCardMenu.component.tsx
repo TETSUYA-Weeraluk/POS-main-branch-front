@@ -38,7 +38,7 @@ const ItemCardMenuComponent = (props: ItemCardMenuComponentProps) => {
       <Divider />
       <CardActions className="flex-shrink-0">
         <button onClick={addItemToCart} className="button-base">
-          + {t("AddToCart")}
+          + {t("addToCart")}
         </button>
       </CardActions>
     </Card>
