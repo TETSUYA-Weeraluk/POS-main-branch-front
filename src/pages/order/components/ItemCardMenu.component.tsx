@@ -1,6 +1,7 @@
 import { Card, CardActions, CardContent, Divider } from "@mui/material";
 import { useAppDispatch } from "../../../store";
 import { addInCart } from "../../../store/orderSlice";
+import { useTranslation } from "react-i18next";
 
 export interface ItemCardMenuComponentProps {
   name: string;
@@ -12,6 +13,7 @@ export interface ItemCardMenuComponentProps {
 const ItemCardMenuComponent = (props: ItemCardMenuComponentProps) => {
   const { name, price, image, type } = props;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const addItemToCart = () => {
     dispatch(addInCart({ name, price, type }));
@@ -36,7 +38,7 @@ const ItemCardMenuComponent = (props: ItemCardMenuComponentProps) => {
       <Divider />
       <CardActions className="flex-shrink-0">
         <button onClick={addItemToCart} className="button-base">
-          + Add Item
+          + {t("AddToCart")}
         </button>
       </CardActions>
     </Card>

@@ -3,8 +3,8 @@ import NavbarItem from "./Navbar-Item";
 import { TbDeviceAnalytics } from "react-icons/tb";
 import { HiOutlineClipboardList } from "react-icons/hi";
 import { BiFoodMenu } from "react-icons/bi";
-import { Button } from "@mui/material";
-import { PiSignOut } from "react-icons/pi";
+import { MdOutlineHistory } from "react-icons/md";
+import { LuUsers } from "react-icons/lu";
 
 interface NavbarItem {
   title: string;
@@ -15,24 +15,34 @@ interface NavbarItem {
 const Navbar = () => {
   const navbarItems: NavbarItem[] = [
     {
-      title: "dashboard",
+      title: "nav.dashboard",
       to: "/",
       icon: <TbDeviceAnalytics />,
     },
     {
-      title: "order",
+      title: "nav.order",
       to: "/order",
       icon: <RiFileList3Line />,
     },
     {
-      title: "listOrders",
+      title: "nav.listOrders",
       to: "/list-orders",
       icon: <HiOutlineClipboardList />,
     },
     {
-      title: "menu",
-      to: "/menu",
+      title: "nav.history",
+      to: "/history-orders",
+      icon: <MdOutlineHistory />,
+    },
+    {
+      title: "nav.product",
+      to: "/product",
       icon: <BiFoodMenu />,
+    },
+    {
+      title: "nav.employee",
+      to: "/employee",
+      icon: <LuUsers />,
     },
   ];
 
@@ -40,7 +50,11 @@ const Navbar = () => {
     <div className="flex flex-col items-center gap-4 border-r h-full">
       <div className="flex flex-col items-center gap-4 w-full p-4">
         <div className="w-full h-[150px] flex  items-center justify-center">
-          <img src="poring.png" alt="" className="w-full h-full object-contain" />
+          <img
+            src="poring.png"
+            alt=""
+            className="w-full h-full object-contain"
+          />
         </div>
       </div>
 
@@ -49,19 +63,6 @@ const Navbar = () => {
           <NavbarItem key={item.title} {...item} />
         ))}
       </div>
-
-      <Button
-        variant="text"
-        color="primary"
-        href="/login"
-        sx={{
-          display: "flex",
-          gap: "8px",
-        }}
-      >
-        <PiSignOut />
-        Sign out
-      </Button>
     </div>
   );
 };

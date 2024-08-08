@@ -1,8 +1,10 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { MdOutlineColorLens } from "react-icons/md";
 
 const MenuThemeComponent = () => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -57,7 +59,7 @@ const MenuThemeComponent = () => {
         }}
       >
         <MdOutlineColorLens size={20} className="text-colorText" />
-        <span className="text-colorText">Theme</span>
+        <span className="text-colorText">{t("theme")}</span>
       </Button>
       <Menu
         id="basic-menu"

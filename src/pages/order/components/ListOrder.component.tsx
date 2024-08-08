@@ -93,7 +93,7 @@ const ListOrderComponent = () => {
         codeDiscount: code,
         discount: discount,
         descriptionDiscount: descriptionDiscount,
-        total: discount ? finalTotal : orders.total,
+        total: orders.total,
       })
     );
     handleOpenDialogAlert();

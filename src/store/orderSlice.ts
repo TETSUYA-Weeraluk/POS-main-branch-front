@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ItemCardMenuComponentProps } from "../pages/order/components/ItemCardMenu.component";
-import { Cart, ListOrders } from "../pages/order/order-type";
+import { Cart, ListOrdersType } from "../pages/order/order-type";
 
 export interface OrderState {
   cart: Cart;
-  listOrders: ListOrders[];
+  listOrders: ListOrdersType[];
   loading?: "idle" | "pending" | "succeeded" | "failed";
   error?: string;
 }
@@ -119,7 +119,7 @@ const orderSlice = createSlice({
       const { cart, codeDiscount, discount, descriptionDiscount, total } =
         action.payload;
 
-      const data: ListOrders = {
+      const data: ListOrdersType = {
         orders: cart.items,
         total: total,
         quantity: cart.quantity,
@@ -127,6 +127,7 @@ const orderSlice = createSlice({
         status: "pending",
         discount,
         descriptionDiscount,
+        totalFinal: total - discount,
       };
       state.listOrders.push(data);
     },

@@ -21,7 +21,7 @@ export interface Cart {
   }[];
 }
 
-export interface ListOrders {
+export interface ListOrdersType {
   orders: {
     type: string;
     quantity: number;
@@ -32,6 +32,7 @@ export interface ListOrders {
       quantity: number;
     }[];
   }[];
+  totalFinal: number;
   total: number;
   quantity: number;
   code?: string;

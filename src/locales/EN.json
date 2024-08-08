@@ -1,8 +1,13 @@
 {
-  "dashboard": "Dashboard",
-  "order": "Order",
-  "listOrders": "List Orders",
-  "menu": "Menu",
+  "nav": {
+    "dashboard": "Dashboard",
+    "order": "Order",
+    "listOrders": "List Orders",
+    "history": "History",
+    "product": "Product",
+    "employee": "Employee"
+  },
   "signOut": "Sign Out",
-  "theme": "Theme"
+  "theme": "Theme",
+  "AddToCart": "Add Item"
 }
