@@ -19,10 +19,6 @@ const Order = () => {
   const [items, setItems] = useState<Item[]>(listItems);
   const [selectedType, setSelectedType] = useState<string>("ALL");
 
-  const test = useSelector((state: RootState) => state.order.listOrders);
-
-  console.log("test", test);
-
   const selectType = (type: string) => {
     if (type === "ALL") {
       setItems(listItems);

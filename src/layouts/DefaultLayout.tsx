@@ -1,30 +1,30 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import HeaderDefault from "../components/Header/HeaderDefault";
-import Navbar from "../components/Navbar/Navbar";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../config/authProvider";
 import OwnerLayout from "./OwnerLayout";
+import EmployeeLayout from "./EmployeeLayout";
 
 const DefaultLayout: React.FC = () => {
   const { token, user } = useAuth();
+
+  console.log(user);
 
   if (!token) {
     return <Navigate to="/login" />;
   }
 
-  if (user.role === "ADMIN") {
+  if (user.role === "ADMIN" || user.role === "MANAGER") {
     return <OwnerLayout />;
   }
-  if (user.role === "MANAGER") {
-    return <OwnerLayout />;
-  }
+
   if (user.role === "EMPLOYEE") {
-    return <OwnerLayout />;
+    return <EmployeeLayout />;
   }
 
   return (
     <div className="flex min-h-screen w-full">
-      <div>
+      <span>Hello</span>
+      {/* <div>
         <Navbar />
       </div>
       <div className="w-full">
@@ -34,7 +34,7 @@ const DefaultLayout: React.FC = () => {
         <main className="w-full flex-grow p-4">
           <Outlet />
         </main>
-      </div>
+      </div> */}
     </div>
   );
 };

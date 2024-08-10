@@ -40,7 +40,6 @@ const Login = () => {
     ).then((res) => {
       const data = res.payload as LoginResponse;
       if (data.token) {
-        console.log("test");
         localStorage.setItem("token-pos", data.token);
         window.location.href = "/";
       }

@@ -56,15 +56,21 @@ export const login = createAsyncThunk<LoginResponse, LoginParams>(
 export const fetchUser = createAsyncThunk(
   "auth/fetchUser",
   async (id: string) => {
-    console.log("tests");
-    const response = await axios.get<{
-      id: string;
-      name: string;
-      email: string;
-      role: string;
-    }>(`${BASE_API}users/${id}`);
-
-    return response.data;
+    try {
+      const response = await axios.get<{
+        message: string;
+        error: string;
+        statusCode: number;
+        id: string;
+        name: string;
+        email: string;
+        role: string;
+      }>(`${BASE_API}users/${id}`);
+      return response.data;
+    } catch (error) {
+      localStorage.removeItem("token-pos");
+      return initialState.user;
+    }
   }
 );
 

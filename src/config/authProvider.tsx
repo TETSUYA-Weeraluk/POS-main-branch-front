@@ -46,13 +46,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         localStorage.setItem("token-pos", token);
-        try {
-          if (!user.name) {
-            const decoded = jwtDecode.jwtDecode(token) as { id: string };
-            dispatch(fetchUser(decoded.id));
-          }
-        } catch (error) {
-          console.log("error", error);
+        if (!user.name) {
+          const decoded = jwtDecode.jwtDecode(token) as { id: string };
+          dispatch(fetchUser(decoded.id));
         }
       } else {
         delete axios.defaults.headers.common["Authorization"];
@@ -61,7 +57,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     getUser();
-  }, [token, dispatch, user.name]);
+  }, [token, dispatch, user]);
 
   const contextValue = useMemo(
     () => ({ token, setToken, user }),
