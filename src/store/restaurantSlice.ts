@@ -9,6 +9,12 @@ export interface CreateRestaurant {
   userId: string;
 }
 
+export interface UpdateRestaurant {
+  name: string;
+  image?: string;
+  id: string;
+}
+
 export interface RestuanrantState {
   restaurant: Restaurant[];
   loading?: "idle" | "pending" | "succeeded" | "failed";
@@ -55,6 +61,23 @@ export const removeRestaurant = createAsyncThunk<string, string>(
   }
 );
 
+export const updateRestaurant = createAsyncThunk<Restaurant, UpdateRestaurant>(
+  "auth/updateRestaurant",
+  async (params: UpdateRestaurant) => {
+    const response = await axios.patch<Restaurant>(
+      `${BASE_API}${path.resturant.update}/${params.id}`,
+      {
+        name: params.name,
+        image: params.image,
+      }
+    );
+
+    console.log(response.data);
+
+    return response.data;
+  }
+);
+
 const restaurantSlice = createSlice({
   name: "restaurant",
   initialState,
@@ -94,6 +117,21 @@ const restaurantSlice = createSlice({
       state.loading = "succeeded";
     });
     builder.addCase(removeRestaurant.rejected, (state, action) => {
+      state.loading = "failed";
+      state.error = action.error.message || "";
+    });
+    builder.addCase(updateRestaurant.pending, (state, action) => {
+      state.loading = action.payload;
+    });
+    builder.addCase(updateRestaurant.fulfilled, (state, action) => {
+      const newRes = action.payload;
+      const index = state.restaurant.findIndex((item) => item.id === newRes.id);
+
+      state.restaurant[index] = newRes;
+
+      state.loading = "succeeded";
+    });
+    builder.addCase(updateRestaurant.rejected, (state, action) => {
       state.loading = "failed";
       state.error = action.error.message || "";
     });

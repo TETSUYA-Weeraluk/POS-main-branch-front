@@ -7,6 +7,8 @@ import DialogAddStore from "./components/Dialog-Add-Store";
 import DialogDeleteStore from "./components/Dialog-Delete-Store";
 import { Restaurant } from "./Restaurant-type";
 import DialogAlert from "../../components/dialog/Dialog-Alert";
+import axios from "axios";
+import { BASE_API } from "../../config/config";
 
 const RestaurantPage = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -29,6 +31,7 @@ const RestaurantPage = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setSelectedStore(null);
   };
 
   const handleOpenDialogDelete = (store: Restaurant) => {
@@ -52,6 +55,14 @@ const RestaurantPage = () => {
   const handleCloseDialogAlert = () => {
     setOpenDialogAlert(false);
   };
+
+  useEffect(() => {
+    const fetch = async () => {
+      const test = await axios.get(`${BASE_API}users/Getme`);
+    };
+
+    fetch();
+  }, []);
 
   return (
     <div className="space-y-4 p-4">

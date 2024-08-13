@@ -7,5 +7,6 @@ export const path = {
     getOwner: "restaurant/owner",
     create: "restaurant",
     delete: "restaurant",
+    update: "restaurant",
   },
 };
