@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { RestaurantDetail } from "./ResturantDetailType";
 import axios from "axios";
 import { BASE_API, path } from "../../config/config";
+import DefaultNavbar from "../../components/DefaultNavbar/DefaultNavbar";
 
 const RestaurantDetailPage = () => {
   const navigate = useNavigate();
@@ -35,46 +36,64 @@ const RestaurantDetailPage = () => {
     }
   }, [params]);
 
+  const navigateToBranch = (id: string) => {
+    navigate(`/branch/${id}`);
+  };
+
   return (
-    <div className="h-full p-4 space-y-10">
-      {user.role === "ADMIN" && (
-        <button className="button-base w-auto" onClick={backToSelectRestaurant}>
-          Back
-        </button>
-      )}
+    <div>
+      <header>
+        <DefaultNavbar />
+      </header>
+      <main>
+        <div className="h-full p-4 space-y-10">
+          {user.role === "ADMIN" && (
+            <button
+              className="button-base w-auto"
+              onClick={backToSelectRestaurant}
+            >
+              Back
+            </button>
+          )}
 
-      <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-center">{branch?.name}</h1>
-        <div className="p-4 border rounded space-y-4">
-          <h2 className="text-xl font-bold">Branches</h2>
-          <div className="flex flex-wrap gap-4">
-            {branch?.branch && branch.branch.length > 0 ? (
-              branch.branch.map((branch, index) => (
-                <div className="border rounded-md p-4 space-y-2" key={index}>
-                  {branch.image ? (
-                    <img
-                      className="object-contain rounded min-h-[250px] h-[250px] max-h-[250px]"
-                      src={`/${branch.image}`}
-                      alt="image branch"
-                    />
-                  ) : (
-                    <div className="w-full flex flex-col items-center justify-center min-h-[250px] h-[250px] max-h-[250px] border font-bold">
-                      <p>Image not found</p>
+          <div className="space-y-4">
+            <h1 className="text-2xl font-bold text-center">{branch?.name}</h1>
+            <div className="p-4 border rounded space-y-4">
+              <h2 className="text-xl font-bold">Branches</h2>
+              <div className="flex flex-wrap gap-4">
+                {branch?.branch && branch.branch.length > 0 ? (
+                  branch.branch.map((branch, index) => (
+                    <div
+                      className="border rounded-md p-4 space-y-2 cursor-pointer"
+                      key={index}
+                      onClick={() => navigateToBranch(branch.id)}
+                    >
+                      {branch.image ? (
+                        <img
+                          className="object-contain rounded min-h-[250px] h-[250px] max-h-[250px]"
+                          src={`/${branch.image}`}
+                          alt="image branch"
+                        />
+                      ) : (
+                        <div className="w-full flex flex-col items-center justify-center min-h-[250px] h-[250px] max-h-[250px] border font-bold">
+                          <p>Image not found</p>
+                        </div>
+                      )}
+                      <p>Name : {branch.name}</p>
+
+                      <p>Address : {branch.address}</p>
+                      <p>Phone : {branch.phone}</p>
+                      <p>Employee : {branch.employee.length}</p>
                     </div>
-                  )}
-                  <p>Name : {branch.name}</p>
-
-                  <p>Address : {branch.address}</p>
-                  <p>Phone : {branch.phone}</p>
-                  <p>Employee : {branch.employee.length}</p>
-                </div>
-              ))
-            ) : (
-              <p>Branch not found</p>
-            )}
+                  ))
+                ) : (
+                  <p>Branch not found</p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

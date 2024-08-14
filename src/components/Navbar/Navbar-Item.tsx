@@ -1,14 +1,15 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Params } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 interface NavbarItemProps {
   title: string;
   to: string;
   icon: React.ReactNode;
+  params: Readonly<Params<string>>;
 }
 
 const NavbarItem = (props: NavbarItemProps) => {
-  const { title, to, icon } = props;
+  const { title, to, icon, params } = props;
   const { t } = useTranslation();
 
   const getNavLinkClass = (isActive: boolean) =>
@@ -16,8 +17,14 @@ const NavbarItem = (props: NavbarItemProps) => {
       isActive ? "bg-primary text-colorTextSecondary" : ""
     }`;
 
+  // const navigateTo = (to: string) => {
+  //   if (params["idBranch"]) {
+  //     return `branch/${params["idBranch"]}/${to}`;
+  //   }
+  // };
+
   return (
-    <NavLink to={to} className={({ isActive }) => getNavLinkClass(isActive)}>
+    <NavLink to={`/branch/${params['idBranch']}${to}`} className={({ isActive }) => getNavLinkClass(isActive)}>
       <div>{icon}</div>
       <span>{t(title)}</span>
     </NavLink>

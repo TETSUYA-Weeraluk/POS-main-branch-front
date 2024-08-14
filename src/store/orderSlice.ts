@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ItemCardMenuComponentProps } from "../pages/order/components/ItemCardMenu.component";
-import { Cart, ListOrdersType } from "../pages/order/order-type";
+import { ItemCardMenuComponentProps } from "../pages/branch/order/components/ItemCardMenu.component";
+import { Cart, ListOrdersType } from "../pages/branch/order/order-type";
 
 export interface OrderState {
   cart: Cart;
@@ -24,6 +24,9 @@ const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
+    removeCart(state) {
+      state.cart = initialState.cart;
+    },
     addInCart(state, action: PayloadAction<ItemCardMenuComponentProps>) {
       const { name, price, type } = action.payload;
 
@@ -134,5 +137,6 @@ const orderSlice = createSlice({
   },
 });
 
-export const { addInCart, removeItem, confirmOrder } = orderSlice.actions;
+export const { addInCart, removeItem, confirmOrder, removeCart } =
+  orderSlice.actions;
 export default orderSlice.reducer;

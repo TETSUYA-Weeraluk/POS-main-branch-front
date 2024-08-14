@@ -11,12 +11,12 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import { RootState, useAppDispatch } from "../../../store";
-import { addInCart, confirmOrder, removeItem } from "../../../store/orderSlice";
+import { RootState, useAppDispatch } from "../../../../store";
+import { addInCart, confirmOrder, removeItem } from "../../../../store/orderSlice";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import DialogConfirm from "../../../components/dialog/DialogConfirm";
-import DialogAlert from "../../../components/dialog/Dialog-Alert";
+import DialogConfirm from "../../../../components/dialog/DialogConfirm";
+import DialogAlert from "../../../../components/dialog/Dialog-Alert";
 import DialogSelectCode from "./DialogSelectCode";
 import { CiCircleRemove } from "react-icons/ci";
 import { useTranslation } from "react-i18next";

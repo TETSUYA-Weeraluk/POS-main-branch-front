@@ -5,6 +5,7 @@ import { HiOutlineClipboardList } from "react-icons/hi";
 import { BiFoodMenu } from "react-icons/bi";
 import { MdOutlineHistory } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
+import { useParams } from "react-router-dom";
 
 interface NavbarItem {
   title: string;
@@ -13,10 +14,14 @@ interface NavbarItem {
 }
 
 const Navbar = () => {
+  const params = useParams();
+
+  
+
   const navbarItems: NavbarItem[] = [
     {
       title: "nav.dashboard",
-      to: "/",
+      to: "/dashboard",
       icon: <TbDeviceAnalytics />,
     },
     {
@@ -47,11 +52,11 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center gap-4 border-r h-full">
+    <div className="flex flex-col items-center gap-4 border-r min-h-screen">
       <div className="flex flex-col items-center gap-4 w-full p-4">
         <div className="w-full h-[150px] flex  items-center justify-center">
           <img
-            src="poring.png"
+            src="/poring.png"
             alt=""
             className="w-full h-full object-contain"
           />
@@ -60,7 +65,7 @@ const Navbar = () => {
 
       <div className="space-y-1">
         {navbarItems.map((item) => (
-          <NavbarItem key={item.title} {...item} />
+          <NavbarItem key={item.title} {...item} params={params} />
         ))}
       </div>
     </div>

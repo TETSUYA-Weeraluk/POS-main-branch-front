@@ -1,10 +1,10 @@
 import ItemCardMenuComponent from "./components/ItemCardMenu.component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ListOrderComponent from "./components/ListOrder.component";
 import { listItems } from "./dataItems";
 import { OrderType } from "./order-type";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useAppDispatch } from "../../../store";
+import { removeCart } from "../../../store/orderSlice";
 
 export interface Item {
   name: string;
@@ -18,6 +18,14 @@ const Order = () => {
 
   const [items, setItems] = useState<Item[]>(listItems);
   const [selectedType, setSelectedType] = useState<string>("ALL");
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(removeCart());
+    };
+  }, [dispatch]);
 
   const selectType = (type: string) => {
     if (type === "ALL") {

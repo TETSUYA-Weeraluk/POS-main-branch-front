@@ -40,6 +40,7 @@ const DialogSelectCode = (props: DialogSelectCodeProps) => {
       <div className="space-y-4 p-4">
         {listCode.map((code) => (
           <div
+            key={code.code}
             className="border rounded sapce-y-2 p-4 hover:cursor-pointer"
             style={{
               borderColor: selectedCode === code.code ? "#279eff" : "#D3D3D3",
@@ -47,8 +48,12 @@ const DialogSelectCode = (props: DialogSelectCodeProps) => {
             onClick={() => handleSelectCode(code.code)}
           >
             <div className="flex flex-col">
-              <span>{t('code')} : {code.code}</span>
-              <span>{t('description')} : {code.description}</span>
+              <span>
+                {t("code")} : {code.code}
+              </span>
+              <span>
+                {t("description")} : {code.description}
+              </span>
             </div>
           </div>
         ))}

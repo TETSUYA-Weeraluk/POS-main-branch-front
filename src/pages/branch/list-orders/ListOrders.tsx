@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "../../../store";
 import { Divider } from "@mui/material";
 import { useState } from "react";
 import { ListOrdersType } from "../order/order-type";

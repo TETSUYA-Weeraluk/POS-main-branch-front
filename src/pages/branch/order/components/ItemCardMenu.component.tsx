@@ -1,6 +1,6 @@
 import { Card, CardActions, CardContent, Divider } from "@mui/material";
-import { useAppDispatch } from "../../../store";
-import { addInCart } from "../../../store/orderSlice";
+import { useAppDispatch } from "../../../../store";
+import { addInCart } from "../../../../store/orderSlice";
 import { useTranslation } from "react-i18next";
 
 export interface ItemCardMenuComponentProps {
