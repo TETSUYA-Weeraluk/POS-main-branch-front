@@ -2,8 +2,7 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../store";
-import * as jwtDecode from "jwt-decode";
-import { fetchUser } from "../store/authSlice";
+import { getMe } from "../store/authSlice";
 
 interface AuthContextType {
   token: string | null;
@@ -47,8 +46,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         localStorage.setItem("token-pos", token);
         if (!user.name) {
-          const decoded = jwtDecode.jwtDecode(token) as { id: string };
-          dispatch(fetchUser(decoded.id));
+          dispatch(getMe());
         }
       } else {
         delete axios.defaults.headers.common["Authorization"];

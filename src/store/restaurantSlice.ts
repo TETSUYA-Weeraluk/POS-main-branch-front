@@ -27,11 +27,11 @@ const initialState: RestuanrantState = {
   error: "",
 };
 
-export const getOwnerRestaurant = createAsyncThunk<Restaurant[], string>(
-  "auth/getRestaurant",
-  async (id: string) => {
+export const getOwnerRestaurant = createAsyncThunk<Restaurant[]>(
+  "resturant/getOwnerRestaurant",
+  async () => {
     const response = await axios.get<Restaurant[]>(
-      `${BASE_API}${path.resturant.getOwner}/${id}`
+      `${BASE_API}${path.resturant.getOwner}`
     );
 
     return response.data;
@@ -39,7 +39,7 @@ export const getOwnerRestaurant = createAsyncThunk<Restaurant[], string>(
 );
 
 export const createRestaurant = createAsyncThunk<Restaurant, CreateRestaurant>(
-  "auth/createRestaurant",
+  "resturant/createRestaurant",
   async (params: CreateRestaurant) => {
     const response = await axios.post<Restaurant>(
       `${BASE_API}${path.resturant.create}`,
@@ -53,7 +53,7 @@ export const createRestaurant = createAsyncThunk<Restaurant, CreateRestaurant>(
 );
 
 export const removeRestaurant = createAsyncThunk<string, string>(
-  "auth/removeRestaurant",
+  "resturant/removeRestaurant",
   async (id: string) => {
     await axios.delete<Restaurant>(`${BASE_API}${path.resturant.delete}/${id}`);
 
@@ -62,7 +62,7 @@ export const removeRestaurant = createAsyncThunk<string, string>(
 );
 
 export const updateRestaurant = createAsyncThunk<Restaurant, UpdateRestaurant>(
-  "auth/updateRestaurant",
+  "resturant/updateRestaurant",
   async (params: UpdateRestaurant) => {
     const response = await axios.patch<Restaurant>(
       `${BASE_API}${path.resturant.update}/${params.id}`,
@@ -71,8 +71,6 @@ export const updateRestaurant = createAsyncThunk<Restaurant, UpdateRestaurant>(
         image: params.image,
       }
     );
-
-    console.log(response.data);
 
     return response.data;
   }

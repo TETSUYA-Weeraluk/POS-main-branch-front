@@ -7,8 +7,6 @@ import EmployeeLayout from "./EmployeeLayout";
 const DefaultLayout: React.FC = () => {
   const { token, user } = useAuth();
 
-  console.log(user);
-
   if (!token) {
     return <Navigate to="/login" />;
   }

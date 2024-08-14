@@ -7,11 +7,10 @@ import DialogAddStore from "./components/Dialog-Add-Store";
 import DialogDeleteStore from "./components/Dialog-Delete-Store";
 import { Restaurant } from "./Restaurant-type";
 import DialogAlert from "../../components/dialog/Dialog-Alert";
-import axios from "axios";
-import { BASE_API } from "../../config/config";
+import { useAuth } from "../../config/authProvider";
+import { useNavigate } from "react-router-dom";
 
 const RestaurantPage = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
   const restaurant = useSelector(
     (state: RootState) => state.restaurant.restaurant
   );
@@ -21,11 +20,15 @@ const RestaurantPage = () => {
   const [selectedStore, setSelectedStore] = useState<Restaurant | null>(null);
   const [openDialogAlert, setOpenDialogAlert] = useState(false);
 
+  const { user } = useAuth();
+
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (user.id) {
-      dispatch(getOwnerRestaurant(user.id));
+    if (user.role === "ADMIN") {
+      dispatch(getOwnerRestaurant());
     }
   }, [user, dispatch]);
 
@@ -56,13 +59,9 @@ const RestaurantPage = () => {
     setOpenDialogAlert(false);
   };
 
-  useEffect(() => {
-    const fetch = async () => {
-      const test = await axios.get(`${BASE_API}users/Getme`);
-    };
-
-    fetch();
-  }, []);
+  const navigateToBranch = (id: string) => {
+    navigate(`/restaurant/${id}`);
+  };
 
   return (
     <div className="space-y-4 p-4">
@@ -97,6 +96,7 @@ const RestaurantPage = () => {
           restaurant.length > 0 &&
           restaurant.map((res) => (
             <div
+              onClick={() => navigateToBranch(res.id)}
               key={res.id}
               className="border hover:cursor-pointer p-4 rounded-md space-y-4 shadow-md w-full h-full flex flex-col"
             >
