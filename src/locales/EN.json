@@ -9,5 +9,15 @@
   },
   "signOut": "Sign Out",
   "theme": "Theme",
-  "AddToCart": "Add Item"
+  "addToCart": "Add Item",
+  "order": "Order",
+  "takeAway": "Take Away",
+  "total": "Total",
+  "discount": "Discount",
+  "totalPaid": "Total Paid",
+  "selectCode": "Select Code",
+  "confirm": "Confirm",
+  "code": "Code",
+  "description": "Description",
+  "table": "Table"
 }

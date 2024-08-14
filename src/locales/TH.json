@@ -9,5 +9,15 @@
   },
   "signOut": "ออกจากระบบ",
   "theme": "ธีม",
-  "AddToCart": "เพิ่มรายการ"
+  "addToCart": "เพิ่มรายการ",
+  "order": "รายการ",
+  "takeAway": "ซื้อกลับบ้าน",
+  "total": "ยอดทั้งหมด",
+  "discount": "ส่วนลด",
+  "totalPaid": "ยอดที่จ่าย",
+  "selectCode": "เลือกส่วนลด",
+  "confirm": "ยืนยัน",
+  "code": "รหัสส่วนลด",
+  "description": "รายละเอียด",
+  "table": "โต๊ะ"
 }

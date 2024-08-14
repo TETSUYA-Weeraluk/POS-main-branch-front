@@ -124,8 +124,6 @@ const TableOrder = () => {
 
   const test = useSelector((state: RootState) => state.order.listOrders);
 
-  console.log(test);
-
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
